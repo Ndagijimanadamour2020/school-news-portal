@@ -1,0 +1,26 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Protect sensitive files
+<FilesMatch "\.(sql|log|ini|sh|bak|config)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Custom error pages
+ErrorDocument 404 /error/404.php
+ErrorDocument 403 /error/403.php
+
+# Block access to hidden directories
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.env
